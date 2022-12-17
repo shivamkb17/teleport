@@ -45,3 +45,5 @@ services:
     networks:
       teleport:
         ipv4_address: 172.10.1.21
+networks:
+  teleport:
