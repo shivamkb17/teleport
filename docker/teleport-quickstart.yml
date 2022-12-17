@@ -36,7 +36,7 @@ services:
     image: teleport:latest
     container_name: one-sshd
     command: /usr/bin/start-sshd.sh
-    env_file: stack.env
+    env_file: env.file
     mem_limit: 300m
     volumes:
       - /var/lib/docker/volumes/telesshd/_data/pam.d/ssh:/etc/pam.d/ssh
