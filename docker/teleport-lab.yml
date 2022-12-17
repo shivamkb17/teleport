@@ -9,14 +9,15 @@ services:
     hostname: luna.teleport
     command: -c "/usr/bin/dumb-init teleport start -d -c /etc/teleport.d/teleport.yaml"
     ports:
-      - "3023:3023"
-      - "3024:3024"
-      - "3025:3025"
-      - "443:443"
+      - 3093:3023
+      - 3094:3024
+      - 3095:3025
+      - 3085:3080
+      - 5443:443
     volumes:
-      - config:/etc/teleport
-      - data:/var/lib/teleport
-      - certs:/mnt/shared/certs
+      - /var/lib/docker/volumes/teleconfig/_data:/etc/teleport
+      - /var/lib/docker/volumes/teleportsdata/_data:/var/lib/teleport
+      - /var/lib/docker/volumes/teleportcerts/_data:/mnt/shared/certs
     networks:
       teleport:
         aliases:
@@ -29,9 +30,9 @@ services:
     entrypoint: /bin/sh
     command: -c "/etc/teleport.d/scripts/generate-certs.sh"
     volumes:
-      - config:/etc/teleport
-      - data:/var/lib/teleport
-      - certs:/mnt/shared/certs
+      - /var/lib/docker/volumes/teleconfig/_data:/etc/teleport
+      - /var/lib/docker/volumes/teleportsdata/_data:/var/lib/teleport
+      - /var/lib/docker/volumes/teleportcerts/_data:/mnt/shared/certs
     depends_on:
       - teleport
     networks:
@@ -48,7 +49,7 @@ services:
     command: -c "/etc/teleport.d/scripts/start-sshd.sh"
     mem_limit: 300m
     volumes:
-      - certs:/mnt/shared/certs
+      - /var/lib/docker/volumes/teleportcerts/_data:/mnt/shared/certs
     depends_on:
       - bootstrap
     networks:
@@ -67,16 +68,11 @@ services:
     command: -c "sleep infinity"
     mem_limit: 300m
     volumes:
-      - certs:/mnt/shared/certs
+      - /var/lib/docker/volumes/teleportcerts/_data:/mnt/shared/certs
     depends_on:
       - bootstrap
     networks:
       - teleport
-
-volumes:
-  certs:
-  data:
-  config:
 
 networks:
   teleport:
