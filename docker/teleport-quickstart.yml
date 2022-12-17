@@ -39,8 +39,8 @@ services:
     env_file: env.file
     mem_limit: 300m
     volumes:
-      - ./sshd/pam.d/ssh:/etc/pam.d/ssh
-      - ./sshd/etc/ssh/sshd_config:/etc/ssh/sshd_config
+      - /var/lib/docker/volumes/telesshd/_data/pam.d/ssh:/etc/pam.d/ssh
+      - /var/lib/docker/volumes/telesshd/_data/etc/ssh/sshd_config:/etc/ssh/sshd_config
       - /var/lib/docker/volumes/teleportcerts/_data:/mnt/shared/certs
     networks:
       teleport:
